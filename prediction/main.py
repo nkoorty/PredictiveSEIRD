@@ -7,6 +7,7 @@ grid = Grid(shape=shape, extent=extent)
 
 # Define time dimension
 time = grid.time_dim
+# testing
 
 # Define Functions for each SEIRD compartment
 S = TimeFunction(name="S", grid=grid, time_order=1, space_order=2)
