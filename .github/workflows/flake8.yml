@@ -1,4 +1,4 @@
-name: run-tests
+name: flake8 check
 
 # Only run this when the branch changes
 on:

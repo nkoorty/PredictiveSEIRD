@@ -1,8 +1,7 @@
-import numpy as np
 from devito import Grid, TimeFunction, Eq, Operator
 
 # Define the grid
-shape = (100, 100)  # Grid shape
+shape = (10, 10)  # Grid shape
 extent = (1.0, 1.0)  # Physical dimensions
 grid = Grid(shape=shape, extent=extent)
 
@@ -12,11 +11,11 @@ time = grid.time_dim
 # Define Functions for each SEIRD compartment
 S = TimeFunction(name="S", grid=grid, time_order=1, space_order=2)
 E = TimeFunction(name="E", grid=grid, time_order=1, space_order=2)
-I = TimeFunction(name="I", grid=grid, time_order=1, space_order=2)
+I = TimeFunction(name="I", grid=grid, time_order=1, space_order=2)  # noqa
 R = TimeFunction(name="R", grid=grid, time_order=1, space_order=2)
 D = TimeFunction(name="D", grid=grid, time_order=1, space_order=2)
 
-# Model parameters
+
 alpha = 0  # Birth rate
 mu = 0  # Natural death rate
 beta_e = 0.0003  # Transmission rate (exposed)
@@ -29,7 +28,8 @@ phi_d = 1/160  # Death rate
 # Define equations
 eqs = [
     Eq(S.forward, S - (beta_e * E * S + beta_i * I * S) + alpha * S - mu * S),
-    Eq(E.forward, E + (beta_e * E * S + beta_i * I * S) - sigma * E - phi_e * E - mu * E),
+    Eq(E.forward, E + (beta_e * E * S + beta_i * I * S) - sigma * E - phi_e *
+       E - mu * E),
     Eq(I.forward, I + sigma * E - phi_r * I - phi_d * I - mu * I),
     Eq(R.forward, R + phi_r * I + phi_e * E - mu * R),
     Eq(D.forward, D + phi_d * I)
@@ -46,7 +46,7 @@ D.data[:] = 0.0
 op = Operator(eqs, time_order=1)
 
 # Run the simulation
-op(time_M=100)  # Run for 100 time steps
+op(time_M=1)  # Run for 100 time steps
 
 # Print final values
 print("S:", S.data)
